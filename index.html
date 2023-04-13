@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Cloud</title>
+    
+
+    <style>
+        canvas {
+            border: solid 1px black;
+            background-color: green;
+        }
+        canvas#texto {
+            color:aliceblue;
+        }
+    </style>
+</head>
+<body onload="init()">
+    <canvas id="canvas" width="800" height="600" > </canvas>
+
+    <script>
+    
+        let posx = 10;
+        let posy =10;
+        let pbx = canvas.width/2;
+        let pby = canvas.height/2;;
+        let velx = 5;
+        let vely = 5;
+        let largura = 600;
+        let altura = 800;
+        var objColor0 = "orange";
+        var objColor1="blue";
+        var objColor2 = "white";
+        var pontos=0
+
+        //funcao que iniciliaza tudo
+        function init() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            addEventListener("keydown", function(e) {
+                //const keyname = event.key;
+                //alert(keyname);
+                
+                if (event.key == "ArrowLeft") {
+                    
+                    posx = posx - 20;
+                    
+                }
+                if (event.key == "ArrowRight") {
+                    
+                    posx =posx + 20;
+                    
+                }
+                if (event.key == "ArrowUp") {
+                    
+                    posy = posy - 20;
+                    
+                }
+                if (event.key == "ArrowDown") {
+                    
+                    posy = posy + 20;
+                    
+                } 
+            
+            
+                   
+            })
+                //da o update na tela nos intervalos 
+                //setTimeout(desenha,1);
+                setTimeout(update,100);
+                
+                
+        };
+
+       
+        function update() {
+            desenha();
+            colisao();
+        };
+        
+        
+        function desenha() {
+            
+            //ctx.clearcircle(0,0.800,600);
+            ctx.clearRect(0, 0,canvas.width,canvas.height);
+            //ctx.clearArcs(0,0,800,600);
+            
+            var fundo = new Image();
+            fundo.src = "paisagem.jpg";
+            addEventListener("load", ()=>{
+                ctx.drawImage(fundo,0,0);
+            });
+            
+            //aqui o desenho os quadrados e circulos
+            ctx.beginPath();
+            ctx.font = "30px Semibold";
+            var texto =ctx.fillText("Erros",650,30 );
+            var texto2 =ctx.fillText(pontos,750,30 );
+            ctx.fillStyle = objColor1;
+            ctx.fillRect(posx, posy,50,50);
+            
+            
+            //ctx,beginPath();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = objColor2;
+            var bola =ctx.arc(pbx,pby,20,20,50,0);
+            
+            ctx.fill();
+            
+            
+            
+
+            pbx +=velx;
+            pby +=vely;
+
+            //condição de colisao do jogo nas bordas
+
+            if (pbx>800 || pbx<0) {
+                velx *= -1;
+
+
+            } if (pby<0 || pby>600) {
+                vely *= -1;
+
+            }
+            
+            //objcolor.save();
+            
+            window.requestAnimationFrame(desenha);
+
+        }
+
+        //funcao da colisao do jogo
+        function colisao() {
+            //var cont=0;
+            if (posx+50>pbx &&
+                posx<pbx+50 &&
+                posy+50>pby &&
+                posy<pby+50){
+                    
+                    pontos++;
+                    velx = velx+5;
+                    vely = vely+5;
+                    
+            }
+            //aqui eu atualizo a funcao colisao
+            requestAnimationFrame(colisao);
+        }
+        function encerrarjogo() {
+            if (pontos==20){
+                ctx.fillText("Fim de jogo", width/2,height/2,50);
+                ctx.fill();
+            }
+        }
+    
+        
+    </script>
+   
+</body>
+</html>
