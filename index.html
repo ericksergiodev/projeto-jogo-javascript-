@@ -34,14 +34,18 @@
         var objColor1="blue";
         var objColor2 = "white";
         var pontos=0
+        var frames=100;
+        var contagemdeframes=0;
 
         //funcao que iniciliaza tudo
         function init() {
             canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
+            
             addEventListener("keydown", function(e) {
                 //const keyname = event.key;
                 //alert(keyname);
+                
                 
                 if (event.key == "ArrowLeft") {
                     
@@ -69,7 +73,7 @@
             })
                 //da o update na tela nos intervalos 
                 //setTimeout(desenha,1);
-                setTimeout(update,100);
+                setTimeout(update,frames);
                 
                 
         };
@@ -78,6 +82,8 @@
         function update() {
             desenha();
             colisao();
+            pontuacao();
+            //encerrarjogo();
         };
         
         
@@ -141,19 +147,24 @@
                 posy+50>pby &&
                 posy<pby+50){
                     
-                    pontos++;
+                    
                     velx = velx+5;
                     vely = vely+5;
+                    pontuacao();
                     
             }
             //aqui eu atualizo a funcao colisao
             requestAnimationFrame(colisao);
         }
-        function encerrarjogo() {
-            if (pontos==20){
-                ctx.fillText("Fim de jogo", width/2,height/2,50);
-                ctx.fill();
-            }
+        function pontuacao() {
+            
+            const contadordeframes=10;
+            contagemdeframes = contadordeframes/frames===0;
+            pontos++
+            
+
+
+            
         }
     
         
